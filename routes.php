@@ -8,13 +8,13 @@ require_once __DIR__.'/router.php';
 get('/gamers/$joueur', 'gamers/joueur.php');
 
 ## <path>#/gamers/add/<joueur>/<pwd>
-post('/gamers/add/$joueur/$pwd', 'gamers/add.php');
+get('/gamers/add/$joueur/$pwd', 'gamers/add.php');
 
 ## <path>#/gamers/login/<joueur>/<pwd>
-put('/gamers/login/$joueur/$pwd', 'gamers/login.php');
+
 
 ## <path>#/gamers/logout/<joueur>/<pwd>
-put('gamers/logout/$joueur/$pwd', 'gamers/logout.php');
+
 
 # B - Consultation admin
 
@@ -46,4 +46,4 @@ put('gamers/logout/$joueur/$pwd', 'gamers/logout.php');
 // For GET or POST
 // The 404.php which is inside the views folder will be called
 // The 404.php has access to $_GET and $_POST
-any('/404','views/404.php');
+any('/404','404/404.php');

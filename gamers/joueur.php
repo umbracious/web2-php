@@ -1,30 +1,35 @@
 <?php
-header('Content-Type: application/json');
+header("Content-Type: application/json");
+
+// Database configuration
+$host = 'localhost:3306';
+$dbname = 'tp2';
+$username = 'root';
+$password = 'root';
 
 try {
-    // Your data - could be from database or other source
-    $userData = [
-        'id' => 123,
-        'username' => 'johndoe',
-        'games_played' => 45,
-        'games_won' => 20,
-        'total_score' => 1500,
-        'last_login' => '2023-10-01 12:00:00'
-    ];
-    
-    // Set headers
-    http_response_code(200); // OK status
-    
-    // Output JSON
-    echo json_encode($userData, JSON_PRETTY_PRINT);
-    
-} catch (Exception $e) {
-    // Error handling
-    http_response_code(500); // Internal Server Error
-    
-    echo json_encode([
-        'success' => false,
-        'error' => $e->getMessage()
-    ]);
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die(json_encode(['error' => 'Database connection failed: ' . $e->getMessage()]));
 }
-?>
+
+try {
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
+    $stmt->execute([':username' => $joueur]);
+
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user) {
+        http_response_code(200);
+        echo json_encode($user);
+    } else {
+        http_response_code(404);
+        echo json_encode([
+            'error' => 'User not found'
+        ]);
+    }
+    
+} catch (PDOException $e) {
+    echo json_encode(['exists' => false, 'error' => $e->getMessage()]);
+}
