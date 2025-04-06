@@ -1,19 +1,6 @@
 <?php
-header("Content-Type: application/json");
-
-// Database configuration
-$host = 'localhost:3306';
-$dbname = 'tp2';
-$username = 'root';
-$password = 'root';
-
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die(json_encode(['error' => 'Database connection failed: ' . $e->getMessage()]));
-}
-
+require_once __DIR__ . '/../database/database.php';
+header("Content-Type: application/json; charset=UTF-8");
 $passwordHash = password_hash($pwd, PASSWORD_BCRYPT);
 
 try {

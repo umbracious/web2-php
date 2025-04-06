@@ -2,13 +2,18 @@
 
 require_once __DIR__.'/router.php';
 
+# Home page
+get('/', 'index.php');
+
 # A - Gestion des joueurs
 
 ## <path>#/gamers/<joueur>
-get('/gamers/$joueur', 'gamers/joueur.php');
+get('/gamers/$joueur', 'api/gamers/joueur.php');
 
 ## <path>#/gamers/add/<joueur>/<pwd>
-get('/gamers/add/$joueur/$pwd', 'gamers/add.php');
+get('/gamers/add/$joueur/$pwd', 'api/gamers/add.php');
+post('/gamers/add', 'api/gamers/add.php');
+
 
 ## <path>#/gamers/login/<joueur>/<pwd>
 
