@@ -23,10 +23,13 @@ put('/gamers/logout/$joueur/$pwd', 'api/gamers/logout.php');
 # B - Consultation admin
 
 ## <path>#/admin/top[/<nb>]
+get('/admin/top/$nb', 'api/admin/top.php');
 
 ## <path>#/admin/delete/joueur/<joueur>
+delete('/admin/delete/joueur/$joueur', 'api/admin/delete/joueur.php');
 
 ## <path>#/admin/delete/def/<id>
+delete('/admin/delete/def/$id', 'api/admin/delete/def.php');
 
 # C - Consultation des définitions
 
