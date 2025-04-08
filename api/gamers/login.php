@@ -10,38 +10,48 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// Get login data
-$data = json_decode(file_get_contents('php://input'), true) ?? $_POST;
-
-// Validate required fields
-if (empty($data['username']) || empty($data['password'])) {
-    http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Username and password are required']);
+// Check if the user is already logged in
+if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'User already logged in']);
     exit;
 }
 
-try {
-    $db = new Database();
-    $conn = $db->getConnection();
-    
-    // Check credentials
-    $stmt = $conn->prepare("SELECT id, username, password FROM gamers WHERE username = ?");
-    $stmt->execute([$data['username']]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if ($user && password_verify($data['password'], $user['password'])) {
-        // Create session
+// Prepare and execute the SQL statement to fetch the user
+$stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username LIMIT 1");
+$stmt->bindParam(':username', $joueur);
+$stmt->execute();
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Check if the user exists and verify the password
+if ($user) {
+    if (password_verify($pwd, $user['password_hash'])){
+        // Set session variables
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['logged_in'] = true;
         
+        try {
+            // Update the last login time
+            $stmt = $pdo->prepare("UPDATE users SET last_login = NOW() WHERE id = :id");
+            $stmt->bindParam(':id', $user['id'], PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+            exit;
+        }
+
+        http_response_code(200);
         echo json_encode(['success' => true, 'message' => 'Login successful']);
     } else {
+        // Password is incorrect
         http_response_code(401);
-        echo json_encode(['success' => false, 'message' => 'Invalid username or password']);
+        echo json_encode(['success' => false, 'message' => 'Invalid password']);
     }
-} catch (PDOException $e) {
-    http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Server error']);
+} else {
+    // User not found
+    http_response_code(401);
+    echo json_encode(['success' => false, 'message' => 'User not found']);
 }
 ?>

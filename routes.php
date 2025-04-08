@@ -11,15 +11,14 @@ get('/', 'index.php');
 get('/gamers/$joueur', 'api/gamers/joueur.php');
 
 ## <path>#/gamers/add/<joueur>/<pwd>
-get('/gamers/add/$joueur/$pwd', 'api/gamers/add.php');
-post('/gamers/add', 'api/gamers/add.php');
+post('/gamers/add/$joueur/$pwd', 'api/gamers/add.php');
 
 
 ## <path>#/gamers/login/<joueur>/<pwd>
-
+post('/gamers/login/$joueur/$pwd', 'api/gamers/login.php');
 
 ## <path>#/gamers/logout/<joueur>/<pwd>
-
+post('/gamers/logout/$joueur/$pwd', 'api/gamers/logout.php');
 
 # B - Consultation admin
 
