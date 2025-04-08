@@ -34,6 +34,9 @@ delete('/admin/delete/def/$id', 'api/admin/delete/def.php');
 # C - Consultation des définitions
 
 ## <path>#/word[/<nb>[/<from>]]
+get('/word/$nb/$from', 'api/word.php');
+get('/word/$nb', 'api/word.php');
+get('/word', 'api/word.php');
 
 # D- Page Web (2 jeux et 2 interfaces de consultation)
 
