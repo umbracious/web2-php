@@ -3,8 +3,8 @@ require_once __DIR__ . '/../database/database.php';
 session_start();
 header('Content-Type: application/json');
 
-// Only allow POST requests for login
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+// Only allow PUT requests for login
+if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
     http_response_code(405);
     echo json_encode(['success' => false, 'message' => 'Method not allowed']);
     exit;
@@ -18,10 +18,16 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
 }
 
 // Prepare and execute the SQL statement to fetch the user
-$stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username LIMIT 1");
-$stmt->bindParam(':username', $joueur);
-$stmt->execute();
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
+try {
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username LIMIT 1");
+    $stmt->bindParam(':username', $joueur);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+    exit;
+}
 
 // Check if the user exists and verify the password
 if ($user) {
@@ -30,6 +36,7 @@ if ($user) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['logged_in'] = true;
+        $_SESSION['password_hash'] = $user['password_hash'];
         
         try {
             // Update the last login time

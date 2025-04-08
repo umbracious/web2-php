@@ -15,10 +15,10 @@ post('/gamers/add/$joueur/$pwd', 'api/gamers/add.php');
 
 
 ## <path>#/gamers/login/<joueur>/<pwd>
-post('/gamers/login/$joueur/$pwd', 'api/gamers/login.php');
+put('/gamers/login/$joueur/$pwd', 'api/gamers/login.php');
 
 ## <path>#/gamers/logout/<joueur>/<pwd>
-post('/gamers/logout/$joueur/$pwd', 'api/gamers/logout.php');
+put('/gamers/logout/$joueur/$pwd', 'api/gamers/logout.php');
 
 # B - Consultation admin
 

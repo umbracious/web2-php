@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_id'] = $userId;
         $_SESSION['username'] = $joueur;
         $_SESSION['logged_in'] = true;
+        $_SESSION['password_hash'] = $passwordHash;
 
         $updateStmt = $pdo->prepare("UPDATE users SET last_login = NOW() WHERE id = :id");
         $updateStmt->bindParam(':id', $userId);
