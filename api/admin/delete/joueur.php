@@ -2,6 +2,12 @@
 require_once __DIR__ . '/../../database/database.php';
 header('Content-Type: application/json');
 
+if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
+    http_response_code(405); // Method Not Allowed
+    echo json_encode(['error' => 'Method not allowed.']);
+    exit;
+}
+
 try {
     // First get the user's ID
     $stmt = $pdo->prepare("SELECT id FROM users WHERE username = :username LIMIT 1");

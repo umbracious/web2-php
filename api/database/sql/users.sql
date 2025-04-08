@@ -5,5 +5,6 @@ CREATE TABLE IF NOT EXISTS users (
     games_played INT DEFAULT 0,
     games_won INT DEFAULT 0,
     total_score INT DEFAULT 0,
-    last_login DATETIME DEFAULT NULL
+    last_login DATETIME DEFAULT NULL,
+    INDEX (username)
 );
