@@ -2,6 +2,9 @@
 
 require_once __DIR__.'/router.php';
 
+# Seed database
+get('/seed', 'api/database/sql/seed.php');
+
 # Home page
 get('/', 'index.php');
 
@@ -34,9 +37,9 @@ delete('/admin/delete/def/$id', 'api/admin/delete/def.php');
 # C - Consultation des définitions
 
 ## <path>#/word[/<nb>[/<from>]]
-get('/word/$nb/$from', 'api/word.php');
-get('/word/$nb', 'api/word.php');
-get('/word', 'api/word.php');
+get('/word/$nb/$from', 'api/word/word.php');
+get('/word/$nb', 'api/word/word.php');
+get('/word', 'api/word/word.php');
 
 # D- Page Web (2 jeux et 2 interfaces de consultation)
 

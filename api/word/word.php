@@ -8,34 +8,16 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     exit;
 }
 
-// nb = 10 by default
-if (!isset($nb)){
-    $nb = 10;
-} else {
-    $nb = max(1, $nb); // Ensure nb is at least 1
-}
-
-// from = 1 by default
-if (!isset($from)){
-    $from = 1;
-} else {
-    $from = max(1, $from); // Ensure from is at least 1
-}
-
 try {
-    // Calculate OFFSET for SQL query (convert from 1-based to 0-based indexing)
-    $offset = max(0, $from - 1);
     
     // Query to get words with their definitions
     $query = "SELECT * 
               FROM definitions
               ORDER BY id
-              LIMIT :limit 
-              OFFSET :offset";
+              LIMIT :limit";
     
     $stmt = $db->prepare($query);
     $stmt->bindParam(':limit', $nb, PDO::PARAM_INT);
-    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
     
     // Process results
