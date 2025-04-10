@@ -24,8 +24,9 @@ try {
     $userId = $user['id'];
 
     // Delete the specified user from the 'joueurs' table
-    $stmt = $pdo->prepare("DELETE FROM users WHERE username = ?");
-    $stmt->execute([$username]);
+    $stmt2 = $pdo->prepare("DELETE FROM users WHERE username = :username");
+    $stmt2->bindParam(':username', $joueur);
+    $stmt2->execute();
 
     // Return the deleted user's id
     echo json_encode(['deleted_id' => $userId]);

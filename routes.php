@@ -44,12 +44,17 @@ get('/word', 'api/word/word.php');
 # D- Page Web (2 jeux et 2 interfaces de consultation)
 
 ## <path>#/jeu/word/[<lg>[/<time>[/<hint>]]]
+get('/jeu/word/$lg/$time/$hint', '/jeu/word.php');
+get('/jeu/word/$lg/$time', '/jeu/word.php');
+get('/jeu/word/$lg', '/jeu/word.php');
 
 ## <path>#/jeu/def[/<lg>/[/<time>]]
 
 ## <path>#/dump/<step>
+get('/dump/$step', '/dump/dump.php');
 
 ## <path>#/doc
+get('/doc', '/doc/doc.php');
 
 // ##################################################
 // ##################################################
