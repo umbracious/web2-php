@@ -49,6 +49,8 @@ get('/jeu/word/$lg/$time', '/jeu/word.php');
 get('/jeu/word/$lg', '/jeu/word.php');
 
 ## <path>#/jeu/def[/<lg>/[/<time>]]
+get('/jeu/def/$lg/$time', '/jeu/def.php');
+get('/jeu/def/$lg', '/jeu/def.php');
 
 ## <path>#/dump/<step>
 get('/dump/$step', '/dump/dump.php');
